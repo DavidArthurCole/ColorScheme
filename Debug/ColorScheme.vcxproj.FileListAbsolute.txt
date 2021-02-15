@@ -1,0 +1,2 @@
+C:\Users\david\source\repos\ColorScheme\Debug\ColorScheme.exe
+C:\Users\david\source\repos\ColorScheme\Debug\ColorScheme.pdb
