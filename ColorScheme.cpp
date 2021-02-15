@@ -30,15 +30,17 @@ int main(void) {
     std::string fillArray, choicesArray[MAX_SIZE] = { "0 - Rainbow", "1 - Master", "2 - Ordered", "3 - Random", "4 - Millionaire", "5 - Phoenix", "6 - Dragon", "7 - Bacon", "8 - Hex Randomizer", "9 - Hex Blend" };
     std::string intBuffer, input, output = "", colorArray[MAX_SIZE], secondInput, validHex[16];
     for (int i = 0; i <= 15; i++)
-    {validHex[i] = "0123456789ABCDEF"[i];}
+    {
+        validHex[i] = "0123456789ABCDEF"[i];
+    }
 
     printOptions();
- 
-    while (validInput == 0){
+
+    while (validInput == 0) {
         std::cout << "\nChoose an option:\n";
         //Acts as a time/delay buffer to wait for user input
         std::getline(std::cin, intBuffer);
-        if (intBuffer[0] >= '0' && intBuffer[0] <= '9'){
+        if (intBuffer[0] >= '0' && intBuffer[0] <= '9') {
             //Error checking for solely numerical values (between 0 and max);
             if (intBuffer.length() > 1)
             {
@@ -61,20 +63,26 @@ int main(void) {
             {
                 std::string grammar;
                 if (codesEntered == 0)
-                { grammar = "first";}
+                {
+                    grammar = "first";
+                }
                 else
-                {grammar = "second";}
+                {
+                    grammar = "second";
+                }
                 std::cout << "\nEnter the " << grammar << " hex value";
-                setConsoleColor( 8);
+                setConsoleColor(8);
                 std::cout << " (type 'help' for common hex codes)";
-                setConsoleColor( 15);
+                setConsoleColor(15);
                 std::cout << ":\n";
                 std::getline(std::cin, hexBuffer);
                 //Removes # from hex codes; won't be implemented until new features are added.
                 if (hexBuffer.substr(0, 1) == "#")
-                {hexBuffer = hexBuffer.substr(1, (hexBuffer.length() - 1));}
+                {
+                    hexBuffer = hexBuffer.substr(1, (hexBuffer.length() - 1));
+                }
                 int hexReturnCode = isHexOk(hexBuffer);
-                switch(hexReturnCode)
+                switch (hexReturnCode)
                 {
                 case 0:
                     hexBufferOk = true;
@@ -98,10 +106,14 @@ int main(void) {
                 }
             }
             if (codesEntered == 0)
-            {hexOne = hexBuffer;}
+            {
+                hexOne = hexBuffer;
+            }
             else
-            {hexTwo = hexBuffer;}
-            codesEntered+=1;
+            {
+                hexTwo = hexBuffer;
+            }
+            codesEntered += 1;
         }
     }
     std::cout << "\nEnter an input:\n";
@@ -139,7 +151,9 @@ int main(void) {
         for (int i = 0; i < input.length(); i++)
         {
             if (input.substr(i, 1) != " ")
-            {adjLength++;}
+            {
+                adjLength++;
+            }
         }
         std::cout << "adjLength: " << adjLength;
         float steps = (adjLength - 1), resRed, resGreen, resBlue;
@@ -155,9 +169,13 @@ int main(void) {
             std::for_each(hexToAdd.begin(), hexToAdd.end(), [](char& c)
                 {c = std::toupper(c); });
             if (input[i] != ' ')
-            {output += "&#" + hexToAdd + input[i];}
+            {
+                output += "&#" + hexToAdd + input[i];
+            }
             else
-            {output += " ";}
+            {
+                output += " ";
+            }
         }
     } break;
     }
@@ -211,9 +229,9 @@ int main(void) {
     return(0);
 }
 
-void caseArrayFill(int& filledArrayPos,std::string (&colorArray)[MAX_SIZE], std::string fillArray){
-    filledArrayPos = (unsigned int) fillArray.size() - 1;
-    for (int i = 0; i <= filledArrayPos; i++) { colorArray[i] = "&" + fillArray.substr(i, 1);}
+void caseArrayFill(int& filledArrayPos, std::string(&colorArray)[MAX_SIZE], std::string fillArray) {
+    filledArrayPos = (unsigned int)fillArray.size() - 1;
+    for (int i = 0; i <= filledArrayPos; i++) { colorArray[i] = "&" + fillArray.substr(i, 1); }
 }
 
 int intFromHex(std::string hexIn)
@@ -232,160 +250,68 @@ std::string hexFromInt(int intIn)
     ss2 << std::hex << intIn;
     ss2 >> hexOut;
     if (hexOut.length() != 2)
-    {hexOut = "0" + hexOut; }
+    {
+        hexOut = "0" + hexOut;
+    }
     return(hexOut);
 }
 
 int isHexOk(std::string hexIn)
 {
     std::for_each(hexIn.begin(), hexIn.end(), [](char& c)
-        {c = std::toupper(c);});
-    if(hexIn == "HELP") //Print HELP coces
-    {return(4);}
+        {c = std::toupper(c); });
+    if (hexIn == "HELP") //Print HELP coces
+    {
+        return(4);
+    }
     if (hexIn.length() < 6) //Too short, add leading 0s
-    {return(1);}
+    {
+        return(1);
+    }
     else if (hexIn.length() > 6) //Too long, verify-
-    {return(2);}
+    {
+        return(2);
+    }
     else
-    {   
+    {
         int okCount = 0;
         for (int i = 0; i <= 5; i++)
         {
             for (int h = 0; h <= 16; h++)
             {
                 if (hexIn[i] == "0123456789ABCDEF"[h])
-                {okCount++;}
-            }       
+                {
+                    okCount++;
+                }
+            }
         }
         //Ok
         if (okCount == 6)
-        {return(0);}
-        else{return(3);}
+        {
+            return(0);
+        }
+        else { return(3); }
     }
 }
 
 void printHelp()
 {
-    for (int i = 1; i <= 16; i++)
+    std::string helpColors[16] = { "Red", "Orange", "Yellow", "Lime", "Green", "Turquoise", "Light Blue", "Blue", "Dark Blue", "Violet", "Magenta", "Black", "Dark Gray", "Gray", "Light Gray", "White" };
+    int helpColorsConsoleInt[16] = { 12, 6, 14, 10, 2, 3, 11, 9, 1, 5, 13, 8, 8, 8, 7, 15 };
+    std::string helpColorsHex[16] = { "FF0000", "FF8C00", "FFEE00", "77FF00", "22FF00", "00FFBB", "00FFFF", "0099FF", "0022FF", "8800FF", "FF00FF", "000000", "474747", "7A7A7A", "ADADAD", "FFFFFF" };
+
+    for (int i = 0; i < 16; i++)
     {
-        std::cout << "   ------------------------" << "\n";
-        switch (i)
-        {
-        case 1:
-            //RED FF0000
-            setConsoleColor( 12);
-            std::cout << "   | Red        | ";
-            setConsoleColor( 15);
-            std::cout << " FF0000 |\n";
-            break;
-        case 2:
-            //ORANGE FFA500
-            setConsoleColor( 6);
-            std::cout << "   | Orange     | ";
-            setConsoleColor( 15);
-            std::cout << " FF8C00 |\n";
-            break;
-        case 3:
-            //YELLOW FFEE00
-            setConsoleColor( 14);
-            std::cout << "   | Yellow     | ";
-            setConsoleColor( 15);
-            std::cout << " FFEE00 |\n";
-            break;
-        case 4:
-            //LIME GREEN 77FF00
-            setConsoleColor( 10);
-            std::cout << "   | Lime       | ";
-            setConsoleColor( 15);
-            std::cout << " 77FF00 |\n";
-            break;
-        case 5:
-            //GREEN 22FF00
-            setConsoleColor( 2);
-            std::cout << "   | Green      | ";
-            setConsoleColor( 15);
-            std::cout << " 22FF00 |\n";
-            break;
-        case 6:
-            //TURQUOISE 00FFBB
-            setConsoleColor( 3);
-            std::cout << "   | Turquoise  | ";
-            setConsoleColor( 15);
-            std::cout << " 00FFBB |\n";
-            break;
-        case 7:
-            //LIGHT BLUE 00FFFF
-            setConsoleColor( 11);
-            std::cout << "   | Light Blue | ";
-            setConsoleColor( 15);
-            std::cout << " 00FFFF |\n";
-            break;
-        case 8:
-            //BLUE 0099FF
-            setConsoleColor( 9);
-            std::cout << "   | Blue       | ";
-            setConsoleColor( 15);
-            std::cout << " 0099FF |\n";
-            break;
-        case 9:
-            //DARK BLUE 0022FF
-            setConsoleColor( 1);
-            std::cout << "   | Dark Blue  | ";
-            setConsoleColor( 15);
-            std::cout << " 0022FF |\n";
-            break;
-        case 10:
-            //VIOLET 8800FF
-            setConsoleColor( 5);
-            std::cout << "   | Violet     | ";
-            setConsoleColor( 15);
-            std::cout << " 8800FF |\n";
-            break;
-        case 11:
-            //MAGENTA FF00FF
-            setConsoleColor( 13);
-            std::cout << "   | Magenta    | ";
-            setConsoleColor( 15);
-            std::cout << " FF00FF |\n";
-            break;
-        case 12:
-            //BLACK 000000
-            setConsoleColor( 8);
-            std::cout << "   | Black      | ";
-            setConsoleColor( 15);
-            std::cout << " 000000 |\n";
-            break;
-        case 13:
-            //DARK GRAY 474747
-            setConsoleColor( 8);
-            std::cout << "   | Dark Gray  | ";
-            setConsoleColor( 15);
-            std::cout << " 474747 |\n";
-            break;
-        case 14:
-            //GRAY 7A7A7A
-            setConsoleColor( 8);
-            std::cout << "   | Gray       | ";
-            setConsoleColor( 15);
-            std::cout << " 7A7A7A |\n";
-            break;
-        case 15:
-            //LIGHT GRAY ADADAD
-            setConsoleColor( 7);
-            std::cout << "   | Light Gray | ";
-            setConsoleColor( 15);
-            std::cout << " ADADAD |\n";
-            break;
-        case 16:
-            //WHITE
-            setConsoleColor( 15);
-            std::cout << "   | White      | ";
-            setConsoleColor( 15);
-            std::cout << " FFFFFF |\n";
-            break;
+        std::cout << "   -----------------------" << "\n";
+        setConsoleColor(helpColorsConsoleInt[i]);
+        std::cout << "   | " << helpColors[i];
+        for (int j = helpColors[i].length(); j < 11; j++) {
+            std::cout << " ";
         }
+        std::cout << "| " << helpColorsHex[i] << " |\n";
+        setConsoleColor(15);
     }
-    std::cout << "   ------------------------" << "\n\n";
+    std::cout << "   -----------------------" << "\n\n";
 }
 
 void setConsoleColor(int n) {
@@ -412,7 +338,7 @@ void printOptions()
 
     std::string textToPrint[CHOICES][7] = {
         {"R", "a", "i", "n", "b", "o", "w"},
-        {"M", "a", "ster", "", "", "", ""}, 
+        {"M", "a", "ster", "", "", "", ""},
         {"O", "r", "d", "e", "r", "e", "d"},
         {"R", "a", "n", "d", "o", "m", ""},
         {"Mil", "lio", "nai", "re", "", "", ""},
@@ -437,20 +363,19 @@ void printOptions()
     };
 
     //Prints choices
-    for(int i = 0; i < CHOICES; i++){
+    for (int i = 0; i < CHOICES; i++) {
         std::cout << "   ----------------------" << "\n";
         std::cout << "   | " << std::to_string(i) << " | ";
         int difToPrint = (sizeof(textToPrint[i]) / sizeof(int));
-        for(int j = 0; j < 7; j++){
+        for (int j = 0; j < 7; j++) {
             setConsoleColor(colors[i][j]);
             std::cout << textToPrint[i][j];
         }
-        for(int k = 0; k < extraSpaces[i]; k++){
+        for (int k = 0; k < extraSpaces[i]; k++) {
             std::cout << " ";
         }
         setConsoleColor(15);
         std::cout << "|\n";
     }
     std::cout << "   ----------------------" << "\n";
-    
 }
