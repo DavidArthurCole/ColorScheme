@@ -9,6 +9,8 @@
 #include <random>
 // Maximum size for a color scheme, can be edited
 const int MAX_SIZE = 32;
+//Number of choices
+const int CHOICES = 10;
 //Function declarations
 void caseArrayFill(int& filledArrayPos, std::string(&colorArray)[MAX_SIZE], std::string fillArray);
 //For use in hex blender, returns the int value of a hex string
@@ -17,30 +19,23 @@ int intFromHex(std::string hex);
 std::string hexFromInt(int intVal);
 void printHelp();
 int isHexOk(std::string hexIn);
-void printCodes(int input);
+//Prints options
+void printOptions();
 void setConsoleColor(int n);
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 //Main runtime
 int main(void) {
     //Buffer for int
-    int validChoiceMax = 0, filledArrayPos = 0, currentColor = 0, validInput = 0;
+    int validChoiceMax = CHOICES, filledArrayPos = 0, currentColor = 0, validInput = 0;
     std::string fillArray, choicesArray[MAX_SIZE] = { "0 - Rainbow", "1 - Master", "2 - Ordered", "3 - Random", "4 - Millionaire", "5 - Phoenix", "6 - Dragon", "7 - Bacon", "8 - Hex Randomizer", "9 - Hex Blend" };
-    std::string printChoice = "Select a scheme (", intBuffer, input, output = "", colorArray[MAX_SIZE], secondInput, validHex[16];
+    std::string intBuffer, input, output = "", colorArray[MAX_SIZE], secondInput, validHex[16];
     for (int i = 0; i <= 15; i++)
     {validHex[i] = "0123456789ABCDEF"[i];}
-    for (int i = 0; i < MAX_SIZE; i++)
-    {
-        std::cout << "   ----------------------" << "\n";
-        if (!choicesArray[i].empty()) 
-        {
-            printCodes(std::stoi(choicesArray[i].substr(0, 1)));
-            validChoiceMax++;
-        }
-        else
-        {i = MAX_SIZE + 1;}
-    }
-    std::cout << "\nChoose an option:\n";
+
+    printOptions();
+ 
     while (validInput == 0){
+        std::cout << "\nChoose an option:\n";
         //Acts as a time/delay buffer to wait for user input
         std::getline(std::cin, intBuffer);
         if (intBuffer[0] >= '0' && intBuffer[0] <= '9'){
@@ -398,128 +393,64 @@ void setConsoleColor(int n) {
     SetConsoleTextAttribute(hConsole, n);
 }
 
-void printCodes(int input)
+void printOptions()
 {
-    switch (input)
-    {
-    case 0:
-    {
-        int colors[] = { 12, 4, 6, 14, 10, 11, 13 };
-        std::string textToPrint = "Rainbow";
-        
-        setConsoleColor(15);
-        std::cout << "   | 0 | ";
-        
-        for (int i = 0; i < textToPrint.length(); i++) {
-            setConsoleColor(colors[i]);
-            std::cout << textToPrint[i];
-        }
+    const int CHOICES = 10;
 
-        setConsoleColor(15);
-        std::cout << "        |\n";
-    }
-    break;
-    case 1:
-    {
-        std::cout << "   | 1 | ";
-        setConsoleColor(4);
-        std::cout << "M";
-        setConsoleColor(12);
-        std::cout << "a";
-        setConsoleColor(15);
-        std::cout << "ster         |\n";
-    }
-    break;
-    case 2:
-    {
-        std::cout << "   | 2 | ";
+    int colors[CHOICES][7] = {
+        {12, 4, 6, 14, 10, 11 , 13}, //Rainbow
+        {4, 12, 15, 15, 15, 15, 15}, //Master
+        { 8, 1, 2, 3, 4, 5, 6}, //Ordered
+        {((rand() % 15) + 1), ((rand() % 15) + 1), ((rand() % 15) + 1), ((rand() % 15) + 1), ((rand() % 15) + 1), ((rand() % 15) + 1), 15}, //Random
+        {6, 14, 15, 6, 15, 15, 15}, //Millionaire
+        {4, 12, 6, 14, 15, 7, 8}, //Phoenix
+        {5, 13, 10, 2, 15, 15, 15}, //Dragon
+        {12, 6, 15, 15, 15, 15, 15}, //Bacon
+        {15, 15, 15, 15, 15, 15, 15}, //Hex Randomizer
+        {15, 15, 15, 15, 15, 15, 15}, //Hex Blender
+    };
 
-        int colors[] = { 8, 1, 2, 3, 4, 5, 6 };
-        std::string textToPrint = "Ordered";
-        for (int i = 0; i < textToPrint.length(); i++) {
-            setConsoleColor(colors[i]);
-            std::cout << textToPrint[i];
+    std::string textToPrint[CHOICES][7] = {
+        {"R", "a", "i", "n", "b", "o", "w"},
+        {"M", "a", "ster", "", "", "", ""}, 
+        {"O", "r", "d", "e", "r", "e", "d"},
+        {"R", "a", "n", "d", "o", "m", ""},
+        {"Mil", "lio", "nai", "re", "", "", ""},
+        {"P", "h", "o", "e", "n", "i", "x"},
+        {"Dr", "a", "g", "on", "", "", ""},
+        {"B", "acon", "", "", "", "", ""},
+        {"Hex Randomizer", "", "", "", "", "", ""},
+        {"Hex Blender", "", "", "", "", "", ""}
+    };
+
+    int extraSpaces[CHOICES] = {
+        {8}, //Rainbow
+        {9}, //Master
+        {8}, //Ordered
+        {9}, //Random
+        {4}, //Millionaire
+        {8}, //Phoenix
+        {9}, //Dragon
+        {10}, //Bacon
+        {1}, //Hex randomizer
+        {4} //Hex blender
+    };
+
+    //Prints choices
+    for(int i = 0; i < CHOICES; i++){
+        std::cout << "   ----------------------" << "\n";
+        std::cout << "   | " << std::to_string(i) << " | ";
+        int difToPrint = (sizeof(textToPrint[i]) / sizeof(int));
+        for(int j = 0; j < 7; j++){
+            setConsoleColor(colors[i][j]);
+            std::cout << textToPrint[i][j];
+        }
+        for(int k = 0; k < extraSpaces[i]; k++){
+            std::cout << " ";
         }
         setConsoleColor(15);
-        std::cout << "        |\n";
+        std::cout << "|\n";
     }
-    break;
-    case 3:
-    {
-        srand((unsigned int)time(NULL));
-        std::cout << "   | 3 | ";
-        //Outputs random using a for loop
-        std::string textToPrint = "Random";
-        for (int i = 0; i < 6; i++) {
-            setConsoleColor((rand() % 15) + 1);
-            std::cout << textToPrint[i];
-        }
-        setConsoleColor(15);
-        std::cout << "         |\n";
-    }
-    break;
-    case 4:
-    {
-        std::cout << "   | 4 | ";
-        setConsoleColor( 6);
-        std::cout << "Mil";
-        setConsoleColor( 14);
-        std::cout << "lio";
-        setConsoleColor( 15);
-        std::cout << "nai";
-        setConsoleColor( 6);
-        std::cout << "re";
-        setConsoleColor( 15);
-        std::cout << "    |\n";
-    }
-    break;
-    case 5: //return("4c6ef78"); break;
-    {
-        std::string textToPrint = "Phoenix";
-        int colors[] = { 4, 12, 6, 14, 15, 7, 8 };
-
-        std::cout << "   | 5 | ";
-        
-        for (int i = 0; i < textToPrint.length(); i++) {
-            setConsoleColor(colors[i]);
-            std::cout << textToPrint[i];
-        }
-
-        setConsoleColor( 15);
-        std::cout << "        |\n";
-    }
-    break;
-    case 6: //return("55da22"); break;
-    {
-        std::cout << "   | 6 | ";
-        setConsoleColor( 5);
-        std::cout << "Dr";
-        setConsoleColor( 13);
-        std::cout << "a";
-        setConsoleColor( 10);
-        std::cout << "g";
-        setConsoleColor( 2);
-        std::cout << "on";
-        setConsoleColor( 15);
-        std::cout << "         |\n";
-    }
-    break;
-    case 7: //return("c6666"); break;
-    {
-        std::cout << "   | 7 | ";
-        setConsoleColor( 12);
-        std::cout << "B";
-        setConsoleColor( 6);
-        std::cout << "acon";
-        setConsoleColor( 15);
-        std::cout << "          |\n";
-    }
-    break;
-    case 8:
-    {std::cout << "   | 8 | Hex Randomizer |\n";}
-    break;
-    case 9:
-    {std::cout << "   | 9 | Hex Blender    |\n";}
-    break;
-    }
+    std::cout << "   ----------------------" << "\n";
+    
 }
