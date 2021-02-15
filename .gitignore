@@ -1,0 +1,10 @@
+#ignore non-useful VS-generated files
+*.ipch
+.vs/*
+#Ignore files besides main cpp
+ColorScheme.*
+!ColorScheme.cpp
+#Ignore debug files
+Debug/*
+#Ignore release files
+x64/*
