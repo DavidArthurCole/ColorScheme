@@ -1,4 +1,0 @@
-C:\Users\David\source\repos\ColorScheme\x64\Debug\ColorScheme.exe
-C:\Users\David\source\repos\ColorScheme\x64\Debug\ColorScheme.pdb
-D:\Windows Files\Users\david\source\repos\ColorScheme\x64\Debug\ColorScheme.exe
-D:\Windows Files\Users\david\source\repos\ColorScheme\x64\Debug\ColorScheme.pdb

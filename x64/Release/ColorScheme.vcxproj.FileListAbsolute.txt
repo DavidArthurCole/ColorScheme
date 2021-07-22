@@ -1,2 +1,0 @@
-C:\Users\david\source\repos\ColorScheme\x64\Release\ColorScheme.exe
-D:\Windows Files\Users\david\source\repos\ColorScheme\x64\Release\ColorScheme.exe
